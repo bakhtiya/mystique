@@ -1,16 +1,11 @@
 #!/usr/bin/python
 
-# BitSoup Interaction
-# By: Cyrus Bakhtiyari
+# Primary Executable
+# This file will be run directly.
 
-# Notes
-# This script is essentially an interaction script with BitSoup. I will
-# eventually modularize this out and use parts for other systems
-# I want to develop.
-# My current goal is to either write this system so that it will inform me when
-# new awesome movies come out for download OR it will help me keep my ratio up
-# by periodically refreshing the new added list of torrents and looking for the
-# best torrents to seed to gain the best ratio :p MUHAHHAHHAHA
+# By: Cyrus Bakhtiyari
+# Email: me@cyrusbakhtiyari.com
+# Site: cyrusbakhtiyari.com
 
 # general imports
 import sys, os
