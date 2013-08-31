@@ -27,6 +27,7 @@ sys.path.append("lib")
 from time import sleep
 from console import console
 from url import *
+from bs4 import BeautifulSoup
 
 # main handler
 if __name__ == "__main__":
@@ -45,28 +46,41 @@ if __name__ == "__main__":
 
 	# make the bitsoup login initial call
         console("calling bitsoup login page")
-        get("https://www.bitsoup.me/login.php")
-        console("bitsoup login page called")
+        loginPage = BeautifulSoup(get("https://www.bitsoup.me/login.php"))
+        console("bitsoup login page called and response recieved")
 
 	# sleep to avoid being caught as a bot
 	# one cannot simply ask for login page, type his username and password in 0.0001 seconds :p
         console("sleeping for 5 seconds")
 	sleep(5)
 
-	# make the login request (assume successful login - cookies are written to cookiefile - defined in configuration)
+	# make the login request (cookies are written to cookiefile - defined in configuration)
         console("sending login request to bitsoup")
-        post("https://www.bitsoup.me/takelogin.php", data="username=" + username + "&password=" + password)
-        console("login request sent")
+        loginResponse = BeautifulSoup(post("https://www.bitsoup.me/takelogin.php", data="username=" + username + "&password=" + password))
+        console("login request sent and response recieved")
+
+        # parse login response for success or failure (this follows BitSoup's HTML formatting on login failure)
+        success = True
+        reason = ""
+        for tag in loginResponse.find_all("td"):
+                tagClass = tag.get("class")
+                if not tagClass or not len(tagClass):
+                        continue
+                if tagClass[0] == "text":
+                        reason += tag.get_text().replace("\n", "")
+                        success = False
+
+        # check login success
+        if not success:
+                console("login to BitSoup failed, reason '" + reason + "'")
+                exit(1)
+        console("login to BitSoup successfull")
 
         # sleep again, this time less as authentication has aleady been done
         console("sleeping for 2 seconds")
         sleep(2)
 
         # clear the annoying announcements 10 times
-        for x in range(10):
-                console("sending clear announcements request to bitsoup")
-                get("https://www.bitsoup.me/clear_announcement.php")
-                console("clear announcements request sent")
-
-                console("sleeping for 1 second")
-                sleep(1)
+        console("sending clear announcements request to bitsoup")
+        clearAnnouncementResponse = BeautifulSoup(get("https://www.bitsoup.me/clear_announcement.php"))
+        console("clear announcements request sent and response recieved")
