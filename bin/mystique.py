@@ -15,6 +15,16 @@
 # general imports
 import sys, os
 
+# specific imports
+from sys import exit, argv
+
+# check relative path
+if __name__ == "__main__":
+        cmd = argv[0]
+        if cmd != "./bin/mystique.py" and cmd != "bin/mystique.py":
+                print "%s: must run from repo root directory (./bin/mystique.py)" % (cmd)
+                exit(1)
+
 # modify path
 sys.path.append("lib")
 
@@ -26,8 +36,17 @@ from url import *
 # main handler
 if __name__ == "__main__":
 
+        # verify username and password passed
+        if len(argv) < 3:
+                print "%s: failed to specify enough parameters (%s [username] [password])" % (cmd, cmd)
+                exit(1)
+
+        # grab username and password
+        username = str(argv[1])
+        password = str(argv[2])
+
 	# show us what we are sending the webserver on a basic request
-	#print get("addictivemobility.com/headers.php")
+	#print get("cyrusbakhtiyari.com/headers.php")
 
 	# make the bitsoup login initial call
         console("calling bitsoup login page")
@@ -41,5 +60,5 @@ if __name__ == "__main__":
 
 	# make the login request
         console("sending login request to bitsoup")
-        post("https://www.bitsoup.me/takelogin.php", data="username=test&password=test")
+        post("https://www.bitsoup.me/takelogin.php", data="username=" + username + "&password=" + password)
         console("login request sent")
