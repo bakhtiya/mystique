@@ -1,6 +1,10 @@
 # URL Library
 # Various URL specific functions.
 
+# By: Cyrus Bakhtiyari
+# Email: me@cyrusbakhtiyari.com
+# Site: cyrusbakhtiyari.com
+
 # general imports
 import sys
 
