@@ -58,7 +58,20 @@ if __name__ == "__main__":
         console("sleeping for 5 seconds")
 	sleep(5)
 
-	# make the login request
+	# make the login request (assume successful login - cookies are written to cookiefile - defined in configuration)
         console("sending login request to bitsoup")
         post("https://www.bitsoup.me/takelogin.php", data="username=" + username + "&password=" + password)
         console("login request sent")
+
+        # sleep again, this time less as authentication has aleady been done
+        console("sleeping for 2 seconds")
+        sleep(2)
+
+        # clear the annoying announcements 10 times
+        for x in range(10):
+                console("sending clear announcements request to bitsoup")
+                get("https://www.bitsoup.me/clear_announcement.php")
+                console("clear announcements request sent")
+
+                console("sleeping for 1 second")
+                sleep(1)
